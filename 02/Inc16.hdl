@@ -13,6 +13,6 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-    Mux16(a=false, b=true, sel[0..15]=true, out=one);
+    Constant(value=1, out=one); 
     Add16(a=in, b=one, out=out);
 }
