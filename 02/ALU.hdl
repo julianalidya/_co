@@ -42,27 +42,27 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-    Mux16(a=x, b=false, sel=zx, out=xZeroed);
+    Mux16(a=x, b=false, sel=zx, out=x_temp);
+    Not16(in=x_temp, out=x_neg);
+    Mux16(a=x_temp, b=x_neg, sel=nx, out=x_final);
 
-    Not16(in=xZeroed, out=xNegated);
-    Mux16(a=xZeroed, b=xNegated, sel=nx, out=xProcessed);
+    Mux16(a=y, b=false, sel=zy, out=y_temp);
+    Not16(in=y_temp, out=y_neg);
+    Mux16(a=y_temp, b=y_neg, sel=ny, out=y_final);
 
-    Mux16(a=y, b=false, sel=zy, out=yZeroed);
+    Add16(a=x_final, b=y_final, out=add_result);
+    And16(a=x_final, b=y_final, out=and_result);
+    Mux16(a=and_result, b=add_result, sel=f, out=alu_output);
 
-    Not16(in=yZeroed, out=yNegated);
-    Mux16(a=yZeroed, b=yNegated, sel=ny, out=yProcessed);
+    Not16(in=alu_output, out=alu_not_output);
+    Mux16(a=alu_output, b=alu_not_output, sel=no, out=final_output);
 
-    Add16(a=xProcessed, b=yProcessed, out=addResult);
-    And16(a=xProcessed, b=yProcessed, out=andResult);
-    Mux16(a=andResult, b=addResult, sel=f, out=preOutput);
+    And16(a=final_output, b=final_output, out[0..7]=lower_bits, out[8..15]=upper_bits);
+    Or8Way(in=lower_bits, out=lower_or);
+    Or8Way(in=upper_bits, out=upper_or);
+    Or(a=lower_or, b=upper_or, out=final_or);
+    Not(in=final_or, out=zero_flag);
 
-    Not16(in=preOutput, out=negatedOutput);
-    Mux16(a=preOutput, b=negatedOutput, sel=no, out=out);
-
-    Or8Way(in=out[0..7], out=orLow);
-    Or8Way(in=out[8..15], out=orHigh);
-    Or(a=orLow, b=orHigh, out=nonZero);
-    Not(in=nonZero, out=zr);
-
-    And(a=out[15], b=true, out=ng);
+    final_output[15] -> negative_flag;
+    final_output -> result;
 }
