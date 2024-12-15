@@ -53,7 +53,18 @@ CHIP ALU {
         ng;
 
     PARTS:
-    Mux16(a=x, b=false, sel=zx, out=xZeroed);
+    CHIP ALU {
+    IN  
+        x[16], y[16],  
+        zx, nx, zy, ny, f, no;
+
+    OUT 
+        out[16],
+        zr,
+        ng;
+
+    PARTS:
+    Mux16(a=x, b=false, sel=zx, out=xZeroed); 
     Not16(in=xZeroed, out=xNot); 
     Mux16(a=xZeroed, b=xNot, sel=nx, out=xFinal);
 
@@ -66,25 +77,11 @@ CHIP ALU {
     Mux16(a=andOut, b=addOut, sel=f, out=outRaw);
 
     Not16(in=outRaw, out=outNot); 
-    Mux16(a=outRaw, b=outNot, sel=no, out=out);  
+    Mux16(a=outRaw, b=outNot, sel=no, out=out); 
 
-    Or(a=out[0], b=out[1], out=or1);
-    Or(a=or1, b=out[2], out=or2);
-    Or(a=or2, b=out[3], out=or3);
-    Or(a=or3, b=out[4], out=or4);
-    Or(a=or4, b=out[5], out=or5);
-    Or(a=or5, b=out[6], out=or6);
-    Or(a=or6, b=out[7], out=or7);
-
-    Or(a=out[8], b=out[9], out=or8);
-    Or(a=or8, b=out[10], out=or9);
-    Or(a=or9, b=out[11], out=or10);
-    Or(a=or10, b=out[12], out=or11);
-    Or(a=or11, b=out[13], out=or12);
-    Or(a=or12, b=out[14], out=or13);
-    Or(a=or13, b=out[15], out=or14);
-
-    Or(a=or7, b=or14, out=anySet);
+    Or8Way(in=out[0..7], out=orLow); 
+    Or8Way(in=out[8..15], out=orHigh); 
+    Or(a=orLow, b=orHigh, out=anySet); 
     Not(in=anySet, out=zr); 
 
     And(a=out[15], b=true, out=ng); 
