@@ -34,10 +34,45 @@ CHIP CPU {
                          // the current program (reset==0).
 
     OUT outM[16],        // M value output
-        writeM,          // Write to M? 
+        writeM,          // Write to M?
         addressM[15],    // Address in data memory (of M)
-        pc[15];          // address of next instruction
+        pc[15];          // Address of next instruction
 
     PARTS:
-    // Put your code here:
+    // Determine if instruction is A-instruction or C-instruction
+    Not(in=instruction[15], out=isAInstruction);
+    And(a=instruction[15], b=true, out=isCInstruction);
+
+    // A register logic (holds address or data)
+    Mux16(a=instruction, b=aluOut, sel=isCInstruction, out=aInput);
+    ARegister(in=aInput, load=aLoad, out=aOut, out[0..14]=addressM);
+
+    // D register logic (holds data)
+    DRegister(in=aluOut, load=dLoad, out=dOut);
+
+    // ALU logic
+    Mux16(a=aOut, b=inM, sel=instruction[12], out=aluInput);
+    ALU(x=dOut, y=aluInput, zx=instruction[11], nx=instruction[10],
+        zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6],
+        out=aluOut, out[0..15]=outM, zr=aluZero, ng=aluNegative);
+
+    // Write to memory logic
+    And(a=instruction[3], b=isCInstruction, out=writeM);
+
+    // Program Counter (PC) logic
+    Or(a=reset, b=jumpCondition, out=pcLoad);
+    PC(in=aOut, load=pcLoad, inc=true, reset=reset, out=pc);
+
+    // Determine jump condition
+    // Evaluate if ALU output matches jump criteria
+    And(a=instruction[0], b=aluZero, out=jumpEQ);  // Jump if EQ
+    And(a=instruction[1], b=aluNegative, out=jumpLT);  // Jump if LT
+    And(a=instruction[2], b=Not(aluNegative), out=jumpGT);  // Jump if GT
+    Or(a=jumpEQ, b=jumpLT, out=jumpLE);
+    Or(a=jumpLE, b=jumpGT, out=jumpCondition);
+
+    // Load control signals for A and D registers
+    And(a=instruction[5], b=isCInstruction, out=dLoad);  // Load D register
+    And(a=instruction[4], b=isCInstruction, out=aLoad);  // Load A register
+
 }
