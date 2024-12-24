@@ -19,5 +19,24 @@ CHIP Computer {
     IN reset;
 
     PARTS:
-    // Put your code here:
+    // Instruction memory (ROM): Holds the program instructions
+    ROM32K(address=pc, out=instruction);
+
+    // Data memory (RAM) and screen memory (RAM[16384] to RAM[24575])
+    RAM16K(in=outM, load=writeM, address=addressM, out=inM);
+
+    // Memory-mapped I/O devices
+    Screen(in=outM, load=writeM, address=addressM, out=inM);
+    Keyboard(out=keyboardOut);
+
+    // CPU: Executes instructions
+    CPU(inM=inM, instruction=instruction, reset=reset,
+        outM=outM, writeM=writeM, addressM=addressM, pc=pc);
+
+    // Control logic for memory-mapped I/O
+    Mux16(a=inM, b=keyboardOut, sel=isKeyboardAddress, out=inM);
+
+    // Determine if the address corresponds to the keyboard or screen
+    Or(a=isScreenAddress, b=isKeyboardAddress, out=isMappedIO);
+    And(a=notMappedIO, b=addressM, out=ramAddres);
 }
