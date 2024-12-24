@@ -27,5 +27,32 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // RAM16K: General-purpose memory for addresses 0x0000 to 0x3FFF
+    RAM16K(in=in, load=ramLoad, address=address[0..13], out=ramOut);
+
+    // Screen: Memory-mapped I/O for video output, addresses 0x4000 to 0x5FFF
+    Screen(in=in, load=screenLoad, address=address[0..12], out=screenOut);
+
+    // Keyboard: Memory-mapped I/O for user input, address 0x6000
+    Keyboard(out=keyboardOut);
+
+    // Address decoding
+    // RAM address range: 0x0000 to 0x3FFF (address[14..15] == 00)
+    Not(in=address[14], out=notAddress14);
+    Not(in=address[15], out=notAddress15);
+    And(a=notAddress14, b=notAddress15, out=isRAM);
+
+    // Screen address range: 0x4000 to 0x5FFF (address[14..15] == 01)
+    And(a=address[14], b=notAddress15, out=isScreen);
+
+    // Keyboard address: 0x6000 (address[14..15] == 10)
+    And(a=notAddress14, b=address[15], out=isKeyboard);
+
+    // Determine load signals
+    And(a=load, b=isRAM, out=ramLoad);
+    And(a=load, b=isScreen, out=screenLoad);
+
+    // Multiplex the outputs
+    Mux16(a=ramOut, b=screenOut, sel=isScreen, out=ramOrScreenOut);
+    Mux16(a=ramOrScreenOut, b=keyboardOut, sel=isKeyboard, out=out);
 }
