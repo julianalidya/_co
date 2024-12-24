@@ -22,21 +22,30 @@ CHIP Computer {
     // Instruction memory (ROM): Holds the program instructions
     ROM32K(address=pc, out=instruction);
 
-    // Data memory (RAM) and screen memory (RAM[16384] to RAM[24575])
-    RAM16K(in=outM, load=writeM, address=addressM, out=inM);
+    // Data memory (RAM): General-purpose memory
+    RAM16K(in=outM, load=writeM, address=addressM, out=ramOut);
 
-    // Memory-mapped I/O devices
-    Screen(in=outM, load=writeM, address=addressM, out=inM);
+    // Screen memory (memory-mapped I/O for video output)
+    Screen(in=outM, load=writeM, address=addressM, out=screenOut);
+
+    // Keyboard input (memory-mapped I/O for user input)
     Keyboard(out=keyboardOut);
 
-    // CPU: Executes instructions
+    // Multiplex memory outputs: inM is selected based on the address
+    Mux16(a=ramOut, b=screenOut, sel=isScreenAddress, out=screenOrRAM);
+    Mux16(a=screenOrRAM, b=keyboardOut, sel=isKeyboardAddress, out=inM);
+
+    // CPU: Executes the program
     CPU(inM=inM, instruction=instruction, reset=reset,
         outM=outM, writeM=writeM, addressM=addressM, pc=pc);
 
-    // Control logic for memory-mapped I/O
-    Mux16(a=inM, b=keyboardOut, sel=isKeyboardAddress, out=inM);
+    // Address decoding: Determines whether the address points to RAM, Screen, or Keyboard
+    And(a=addressM[13], b=addressM[14], out=isMappedIO);
+    Not(in=isMappedIO, out=isRAMAddress);
 
-    // Determine if the address corresponds to the keyboard or screen
-    Or(a=isScreenAddress, b=isKeyboardAddress, out=isMappedIO);
-    And(a=notMappedIO, b=addressM, out=ramAddres);
+    // Screen address (16384-24575)
+    And(a=addressM[13], b=Not(addressM[14]), out=isScreenAddress);
+
+    // Keyboard address (24576-32767)
+    And(a=addressM[14], b=addressM[13], out=isKeyboardAddress);
 }
