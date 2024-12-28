@@ -13,7 +13,7 @@ export function layout(title, content) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #ffe3eb; /* Soft pink background */
+          background-color: #ffe3eb; 
           color: #333;
         }
         .container {
@@ -39,7 +39,7 @@ export function layout(title, content) {
           border: 2px solid #ff91a4;
         }
         a:hover {
-          background-color: #ff91a4; /* Darker pastel pink on hover */
+          background-color: #ff91a4;
         }
       </style>
     </head>
@@ -63,14 +63,14 @@ export function home(user) {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 0;
-          background-color: #ffe8f2; /* Baby pink background */
+          background-color: #ffe8f2; 
           display: flex;
           align-items: center;
           justify-content: center;
           height: 100vh;
         }
         .home-container {
-          background-color: #fff; /* White card */
+          background-color: #fff;
           border-radius: 20px;
           padding: 50px 40px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -90,7 +90,7 @@ export function home(user) {
         .btn-group {
           display: flex;
           justify-content: center;
-          margin-bottom: 10px; /* Reduced gap */
+          margin-bottom: 5px;
           align-items: center;
         }
         .btn-group a {
@@ -106,11 +106,11 @@ export function home(user) {
           transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         .btn-group a:hover {
-          background-color: #a55b6e; /* Darker pink on hover */
+          background-color: #a55b6e; 
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .menu {
-          margin-top: 15px; /* Reduced gap above Play Game and Leaderboard buttons */
+          margin-top: 15px; 
           width: 100%;
           display: flex;
           flex-direction: column;
@@ -119,20 +119,20 @@ export function home(user) {
         .menu a {
           display: block;
           width: 80%;
-          margin: 5px 0; /* Reduced gap between buttons */
+          margin-bottom: 10px;
           padding: 12px;
-          background-color: #ffb9c5; /* Pink button color */
+          background-color: #ffb9c5;
           border: 2px solid #ff91a4;
           color: white;
           text-decoration: none;
           border-radius: 8px;
           font-size: 16px;
           font-weight: bold;
-          text-align: center; /* Center text */
+          text-align: center; 
           transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         .menu a:hover {
-          background-color: #a55b6e; /* Darker pink on hover */
+          background-color: #a55b6e;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .user-info {
@@ -218,14 +218,14 @@ export function signupUi() {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 0;
-          background-color: #ffe3eb; /* Soft pink background */
+          background-color: #ffe3eb; 
           display: flex;
           align-items: center;
           justify-content: center;
           height: 100vh;
         }
         .signup-container {
-          background-color: #fff; /* White card */
+          background-color: #fff;
           border-radius: 20px;
           padding: 50px 40px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -240,29 +240,29 @@ export function signupUi() {
         }
         form {
           display: flex;
-          flex-direction: column; /* Stack inputs vertically */
+          flex-direction: column; 
           align-items: center;
         }
         input {
-          width: 100%; /* Full width of container */
-          max-width: 280px; /* Restrict maximum width */
+          width: 100%;
+          max-width: 280px; 
           padding: 12px;
           margin: 10px 0;
-          border: 2px solid #ffd3da; /* Light pink border */
+          border: 2px solid #ffd3da; 
           border-radius: 8px;
           font-size: 16px;
           color: #333;
           outline: none;
         }
         input:focus {
-          border-color: #ff91a4; /* Highlight on focus */
+          border-color: #ff91a4; 
           box-shadow: 0 0 5px rgba(255, 145, 164, 0.5);
         }
         button {
           width: 100%;
           max-width: 280px;
           padding: 12px;
-          background-color: #ff91a4; /* Pink button */
+          background-color: #ff91a4;
           color: white;
           border: none;
           border-radius: 8px;
@@ -273,16 +273,16 @@ export function signupUi() {
           margin-top: 10px;
         }
         button:hover {
-          background-color: #a55b6e; /* Darker pink on hover */
+          background-color: #a55b6e;
         }
         p {
           margin-top: 15px;
           font-size: 14px;
-          color: #a55b6e; /* Dark pink */
+          color: #a55b6e;
         }
         p a {
           text-decoration: none;
-          color: #ff91a4; /* Link color */
+          color: #ff91a4;
           font-weight: bold;
         }
         p a:hover {
@@ -317,14 +317,14 @@ export function loginUi() {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 0;
-          background-color: #ffe3eb; /* Soft pink background */
+          background-color: #ffe3eb; 
           display: flex;
           align-items: center;
           justify-content: center;
           height: 100vh;
         }
         .login-container {
-          background-color: #fff; /* White card */
+          background-color: #fff; 
           border-radius: 20px;
           padding: 50px 40px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -339,29 +339,29 @@ export function loginUi() {
         }
         form {
           display: flex;
-          flex-direction: column; /* Stack inputs vertically */
+          flex-direction: column; 
           align-items: center;
         }
         input {
-          width: 100%; /* Full width of container */
-          max-width: 280px; /* Restrict maximum width */
+          width: 100%; 
+          max-width: 280px; 
           padding: 12px;
           margin: 10px 0;
-          border: 2px solid #ffd3da; /* Light pink border */
+          border: 2px solid #ffd3da; 
           border-radius: 8px;
           font-size: 16px;
           color: #333;
           outline: none;
         }
         input:focus {
-          border-color: #ff91a4; /* Highlight on focus */
+          border-color: #ff91a4; 
           box-shadow: 0 0 5px rgba(255, 145, 164, 0.5);
         }
         button {
           width: 100%;
           max-width: 280px;
           padding: 12px;
-          background-color: #ff91a4; /* Pink button */
+          background-color: #ff91a4; 
           color: white;
           border: none;
           border-radius: 8px;
@@ -372,16 +372,16 @@ export function loginUi() {
           margin-top: 10px;
         }
         button:hover {
-          background-color: #a55b6e; /* Darker pink on hover */
+          background-color: #a55b6e; 
         }
         p {
           margin-top: 15px;
           font-size: 14px;
-          color: #a55b6e; /* Dark pink */
+          color: #a55b6e; 
         }
         p a {
           text-decoration: none;
-          color: #ff91a4; /* Link color */
+          color: #ff91a4; 
           font-weight: bold;
         }
         p a:hover {

@@ -4,7 +4,6 @@ import * as render from "./render.js";
 
 const users = {};
 
-// Utility to save and load data
 async function loadData() {
   try {
     const data = await Deno.readTextFile("data.json");
@@ -18,7 +17,6 @@ async function saveData() {
   await Deno.writeTextFile("data.json", JSON.stringify(users, null, 2));
 }
 
-// Router
 const router = new Router();
 router
   .get("/", home)
@@ -40,13 +38,11 @@ app.use(Session.initMiddleware());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// Utility Functions
 async function parseForm(ctx) {
   const body = ctx.request.body({ type: "form" });
   return Object.fromEntries(await body.value);
 }
 
-// Routes
 async function home(ctx) {
   const user = await ctx.state.session.get("user");
   ctx.response.body = render.home(user);
@@ -90,8 +86,8 @@ async function logout(ctx) {
 async function gameUi(ctx) {
   const user = await ctx.state.session.get("user");
   if (user) {
-    const highScore = users[user.username]?.highScore || 0; // Get high score for the logged-in user
-    ctx.response.body = render.game(user.username, highScore); // Pass user-specific high score
+    const highScore = users[user.username]?.highScore || 0; 
+    ctx.response.body = render.game(user.username, highScore); 
   } else {
     ctx.response.body = render.fail("You must log in to play.");
   }
@@ -112,10 +108,9 @@ async function submitScore(ctx) {
     return;
   }
 
-  // Update the user's high score if the new score is higher
   if (score > users[user.username].highScore) {
     users[user.username].highScore = score;
-    await saveData(); // Save to persistent storage
+    await saveData(); 
   }
 
   ctx.response.body = { success: true, highScore: users[user.username].highScore };
@@ -128,7 +123,6 @@ async function leaderboard(ctx) {
   ctx.response.body = render.leaderboard(leaderboard);
 }
 
-// Load data and start server
 await loadData();
 console.log("Server running on http://localhost:8000");
 await app.listen({ port: 8000 });

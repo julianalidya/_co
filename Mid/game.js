@@ -1,10 +1,8 @@
-// Game Elements
 const board = document.getElementById("game");
 const scoreContainer = document.querySelector(".score-container");
 const currentScoreElement = document.getElementById("current-score");
 const highScoreElement = document.getElementById("high-score");
 
-// Game Configuration
 const boardSize = 20;
 const cellSize = 20;
 
@@ -15,14 +13,12 @@ let score = 0;
 let highScore = 0;
 let hasMoved = false;
 
-// Load High Score
 function loadHighScore() {
   const storedHighScore = localStorage.getItem("highScore");
   highScore = storedHighScore ? parseInt(storedHighScore, 10) : 0;
   highScoreElement.textContent = `High Score: ${highScore}`;
 }
 
-// Save High Score
 function saveHighScore() {
   if (score > highScore) {
     highScore = score;
@@ -31,13 +27,11 @@ function saveHighScore() {
   }
 }
 
-// Update Scores
 function updateScores() {
   currentScoreElement.textContent = `Score: ${score}`;
   saveHighScore();
 }
 
-// Generate Food
 function generateFood() {
   food = {
     x: Math.floor(Math.random() * boardSize),
@@ -45,21 +39,18 @@ function generateFood() {
   };
 }
 
-// Render Board
 function renderBoard() {
-  board.innerHTML = ""; // Clear board
+  board.innerHTML = ""; 
 
-  // Render Food
   const foodElement = document.createElement("div");
   foodElement.style.position = "absolute";
   foodElement.style.width = `${cellSize}px`;
   foodElement.style.height = `${cellSize}px`;
   foodElement.style.left = `${food.x * cellSize}px`;
   foodElement.style.top = `${food.y * cellSize}px`;
-  foodElement.style.backgroundColor = "#ffd3da"; // Pastel pink food
+  foodElement.style.backgroundColor = "#ffd3da"; 
   board.appendChild(foodElement);
 
-  // Render Snake
   snake.forEach((segment) => {
     const snakeElement = document.createElement("div");
     snakeElement.style.position = "absolute";
@@ -67,12 +58,11 @@ function renderBoard() {
     snakeElement.style.height = `${cellSize}px`;
     snakeElement.style.left = `${segment.x * cellSize}px`;
     snakeElement.style.top = `${segment.y * cellSize}px`;
-    snakeElement.style.backgroundColor = "#333"; // Dark snake color
+    snakeElement.style.backgroundColor = "#333"; 
     board.appendChild(snakeElement);
   });
 }
 
-// Move Snake
 function moveSnake() {
   if (!hasMoved) return;
 
@@ -81,7 +71,6 @@ function moveSnake() {
     y: (snake[0].y + direction.y + boardSize) % boardSize,
   };
 
-  // Check collision with self
   if (snake.some((segment) => segment.x === newHead.x && segment.y === newHead.y)) {
     alert(`Game Over! Your score: ${score}`);
     resetGame();
@@ -101,7 +90,6 @@ function moveSnake() {
   renderBoard();
 }
 
-// Reset Game
 function resetGame() {
   snake = [{ x: 10, y: 10 }];
   direction = { x: 1, y: 0 };
@@ -113,7 +101,6 @@ function resetGame() {
   renderBoard();
 }
 
-// Handle Key Presses
 function handleKeydown(event) {
   hasMoved = true;
   switch (event.key) {
@@ -143,10 +130,9 @@ function fetchHighScore() {
     });
 }
 
-// Initialize Game
 function initGame() {
   fetchHighScore().then((serverHighScore) => {
-    highScore = serverHighScore; // Fetch from server
+    highScore = serverHighScore;
     highScoreElement.textContent = `High Score: ${highScore}`;
     createBoard();
     renderBoard();
@@ -155,20 +141,18 @@ function initGame() {
   });
 }
 
-// Create Board
 function createBoard() {
   board.style.position = "relative";
   board.style.width = `${boardSize * cellSize}px`;
   board.style.height = `${boardSize * cellSize}px`;
-  board.style.border = "3px solid #ffb9c5"; // Pink border
-  board.style.backgroundColor = "#fff"; // White background
+  board.style.border = "3px solid #ffb9c5"; 
+  board.style.backgroundColor = "#fff";
   board.style.marginTop = "10px";
 
-  // Restore old design for scores
   scoreContainer.style.display = "flex";
   scoreContainer.style.justifyContent = "space-between";
-  scoreContainer.style.backgroundColor = "#ffb9c5"; // Pastel pink background
-  scoreContainer.style.padding = "10px"; // Increased padding to make it taller
+  scoreContainer.style.backgroundColor = "#ffb9c5"; 
+  scoreContainer.style.padding = "10px"; 
   scoreContainer.style.marginTop = "10px";
   scoreContainer.style.borderRadius = "10px 10px 0 0";
   scoreContainer.style.color = "#fff";
@@ -178,7 +162,6 @@ function createBoard() {
   highScoreElement.style.fontSize = "16px";
 }
 
-// Function to submit score to the server
 function submitScoreToServer(score) {
   fetch("/game/score", {
     method: "POST",
@@ -191,15 +174,13 @@ function submitScoreToServer(score) {
   });
 }
 
-// Update `saveHighScore` to also submit the score to the server
 function saveHighScore() {
   if (score > highScore) {
     highScore = score;
     localStorage.setItem("highScore", highScore);
     highScoreElement.textContent = `High Score: ${highScore}`;
-    submitScoreToServer(highScore); // Submit to the server
+    submitScoreToServer(highScore);
   }
 }
 
-// Start Game
 initGame();
