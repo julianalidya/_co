@@ -2,4 +2,4 @@
 
 ## 閱讀一本計算機結構書（Computer Organization and Design RISC-V Edition）的心得 
     i read the book briefly with e-books (pdf) online
-[期末報告](https://github.com/julianalidya/_co/blob/master/final/Computer%20Organization%20and%20Design%20RISC-V%20Edition%20%E5%BF%83%E5%BE%97.pdf)
+[期末報告](https://github.com/julianalidya/_co/blob/master/final/%E6%9C%9F%E6%9C%AB%E5%A0%B1%E5%91%8A.pdf)
