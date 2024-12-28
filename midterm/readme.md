@@ -2,7 +2,7 @@
 
 ## 第一週習題：第一章 1-6 題
     Made by myself, got some help from chatgpt to understand the concept better
-[running pic](https://github.com/julianalidya/_co/blob/master/01/run.png)
+[running pic](https://github.com/julianalidya/_co/blob/master/01/run.png)<br />
 [Not](https://github.com/julianalidya/_co/blob/master/01/Not.hdl)
 [And](https://github.com/julianalidya/_co/blob/master/01/And.hdl)
 [Or](https://github.com/julianalidya/_co/blob/master/01/Or.hdl)
